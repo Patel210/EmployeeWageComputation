@@ -1,7 +1,6 @@
 package com.capgemini.employeewagecomputation;
 
-
-public class EmployeeWageComputation {
+public class EmployeeWageComputation implements WageCalculator {
 	private static final int IS_FULL_TIME = 2;
 	private static final int IS_PART_TIME = 1;
 	private static final int HOURS_FULL_TIME = 8;
@@ -17,6 +16,7 @@ public class EmployeeWageComputation {
 	/**
 	 * To compute wage
 	 */
+	@Override
 	public void computeWage() {
 		int noOfCompany = companies.length;
 
@@ -75,18 +75,14 @@ public class EmployeeWageComputation {
 	}
 
 	public static void main(String[] args) {
-		Company codesity = new Company("Codesity", 100, 22, 100);
-		Company ePW = new Company("ePW", 90, 20, 120);
-		Company dMart = new Company("dMart", 110, 20, 150);
-		
+
 		Company[] companies = new Company[3];
-		
-		companies[0] = codesity;
-		companies[1] = ePW;
-		companies[2] = dMart;
-		
+
+		companies[0] = new Company("Codesity", 100, 22, 100);
+		companies[1] = new Company("ePW", 90, 20, 120);
+		companies[2] = new Company("ePW", 90, 20, 120);
+
 		EmployeeWageComputation employeeWageComputation = new EmployeeWageComputation(companies);
-		
 		employeeWageComputation.computeWage();
 
 	}
