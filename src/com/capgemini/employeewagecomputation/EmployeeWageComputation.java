@@ -24,16 +24,18 @@ public class EmployeeWageComputation implements WageCalculator {
 
 		for (Company company : company) {
 
-			int totalWage = 0, totalHours = 0;
+			int totalWage = 0, totalHours = 0, noOfDays = 0;
 			for (int days = 0; days < company.getNoOfWorkingDays()
 					&& totalHours < company.getTotalFixedWorkingHours(); days++) {
-
-				totalWage += getDailyWage(company.getWagePerHour());
+				int dailyWage =getDailyWage(company.getWagePerHour());
+				totalWage += dailyWage;
 				totalHours += getDailyHours(company.getWagePerHour());
 				if (totalHours > company.getTotalFixedWorkingHours()) {
 					totalWage -= (totalHours - company.getTotalFixedWorkingHours())
 							* company.getWagePerHour();
 				}
+				noOfDays++;
+				System.out.println("Day "+ noOfDays + " Emp Wage for company "+ company.getCompanyName() + ": " + dailyWage);
 			}
 			System.out.println("Total Wage of " + company.getCompanyName() + " is: " + totalWage);
 		}
