@@ -6,36 +6,36 @@ public class EmployeeWageComputation {
 	private static final int IS_PART_TIME = 1;
 	private static final int HOURS_FULL_TIME = 8;
 	private static final int HOURS_PART_TIME = 4;
-	private final String companyName;
-	private final int wagePerHour;
-	private final int noOfWorkingDays;
-	private final int totalFixedWorkingHours;
 
-	public EmployeeWageComputation(String companyName, int wagePerHour, int noOfWorkingDays,
-			int totalFixedWorkingHours) {
+	private Company[] companies;
 
-		this.companyName = companyName;
-		this.wagePerHour = wagePerHour;
-		this.noOfWorkingDays = noOfWorkingDays;
-		this.totalFixedWorkingHours = totalFixedWorkingHours;
-
+	public EmployeeWageComputation(Company[] companies) {
+		super();
+		this.companies = companies;
 	}
 
 	/**
 	 * To compute wage
 	 */
-	public int computeWage() {
+	public void computeWage() {
+		int noOfCompany = companies.length;
 
-		int totalWage = 0, totalHours = 0;
-		for (int days = 0; days < noOfWorkingDays && totalHours < totalFixedWorkingHours; days++) {
-			int empCheck = (int) Math.floor(Math.random() * 10) % 3;
-			totalWage += getDailyWage(wagePerHour);
-			totalHours += getDailyHours(wagePerHour);
-			if (totalHours > totalFixedWorkingHours) {
-				totalWage -= (totalHours - totalFixedWorkingHours) * wagePerHour;
+		for (int i = 0; i < noOfCompany; i++) {
+
+			int totalWage = 0, totalHours = 0;
+			for (int days = 0; days < companies[i].getNoOfWorkingDays()
+					&& totalHours < companies[i].getTotalFixedWorkingHours(); days++) {
+
+				totalWage += getDailyWage(companies[i].getWagePerHour());
+				totalHours += getDailyHours(companies[i].getWagePerHour());
+				if (totalHours > companies[i].getTotalFixedWorkingHours()) {
+					totalWage -= (totalHours - companies[i].getTotalFixedWorkingHours())
+							* companies[i].getWagePerHour();
+				}
 			}
+			System.out.println("Total Wage of " + companies[i].getCompanyName() + " is: " + totalWage);
 		}
-		return totalWage;
+
 	}
 
 	/**
@@ -75,14 +75,20 @@ public class EmployeeWageComputation {
 	}
 
 	public static void main(String[] args) {
-		EmployeeWageComputation empWageBuilderCodesity = new EmployeeWageComputation("Codesity", 100, 20, 100);
-		EmployeeWageComputation empWageBuilderePW = new EmployeeWageComputation("ePW", 50, 20, 100);
+		Company codesity = new Company("Codesity", 100, 22, 100);
+		Company ePW = new Company("ePW", 90, 20, 120);
+		Company dMart = new Company("dMart", 110, 20, 150);
 		
-		int wageOfCompanyCodesity = empWageBuilderCodesity.computeWage();
-		int wageOfCompanyePW = empWageBuilderePW.computeWage();
-		System.out.println(wageOfCompanyePW );
-		System.out.println(wageOfCompanyCodesity);
+		Company[] companies = new Company[3];
 		
+		companies[0] = codesity;
+		companies[1] = ePW;
+		companies[2] = dMart;
+		
+		EmployeeWageComputation employeeWageComputation = new EmployeeWageComputation(companies);
+		
+		employeeWageComputation.computeWage();
+
 	}
 
 }
