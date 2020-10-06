@@ -1,16 +1,19 @@
 package com.capgemini.employeewagecomputation;
 
+import java.util.ArrayList;
+
 public class EmployeeWageComputation implements WageCalculator {
 	private static final int IS_FULL_TIME = 2;
 	private static final int IS_PART_TIME = 1;
 	private static final int HOURS_FULL_TIME = 8;
 	private static final int HOURS_PART_TIME = 4;
 
-	private Company[] companies;
-
-	public EmployeeWageComputation(Company[] companies) {
+	private ArrayList<Company> company;
+	
+	//Constructor
+	public EmployeeWageComputation(ArrayList<Company> companies) {
 		super();
-		this.companies = companies;
+		this.company = companies;
 	}
 
 	/**
@@ -18,22 +21,21 @@ public class EmployeeWageComputation implements WageCalculator {
 	 */
 	@Override
 	public void computeWage() {
-		int noOfCompany = companies.length;
 
-		for (int i = 0; i < noOfCompany; i++) {
+		for (Company company : company) {
 
 			int totalWage = 0, totalHours = 0;
-			for (int days = 0; days < companies[i].getNoOfWorkingDays()
-					&& totalHours < companies[i].getTotalFixedWorkingHours(); days++) {
+			for (int days = 0; days < company.getNoOfWorkingDays()
+					&& totalHours < company.getTotalFixedWorkingHours(); days++) {
 
-				totalWage += getDailyWage(companies[i].getWagePerHour());
-				totalHours += getDailyHours(companies[i].getWagePerHour());
-				if (totalHours > companies[i].getTotalFixedWorkingHours()) {
-					totalWage -= (totalHours - companies[i].getTotalFixedWorkingHours())
-							* companies[i].getWagePerHour();
+				totalWage += getDailyWage(company.getWagePerHour());
+				totalHours += getDailyHours(company.getWagePerHour());
+				if (totalHours > company.getTotalFixedWorkingHours()) {
+					totalWage -= (totalHours - company.getTotalFixedWorkingHours())
+							* company.getWagePerHour();
 				}
 			}
-			System.out.println("Total Wage of " + companies[i].getCompanyName() + " is: " + totalWage);
+			System.out.println("Total Wage of " + company.getCompanyName() + " is: " + totalWage);
 		}
 
 	}
@@ -76,11 +78,11 @@ public class EmployeeWageComputation implements WageCalculator {
 
 	public static void main(String[] args) {
 
-		Company[] companies = new Company[3];
-
-		companies[0] = new Company("Codesity", 100, 22, 100);
-		companies[1] = new Company("ePW", 90, 20, 120);
-		companies[2] = new Company("ePW", 90, 20, 120);
+		ArrayList<Company> companies = new ArrayList<Company>();
+		
+		companies.add(new Company("Codesity", 100, 22, 100));
+		companies.add(new Company("ePW", 90, 20, 120));
+		companies.add(new Company("dMart", 110, 20, 150));
 
 		EmployeeWageComputation employeeWageComputation = new EmployeeWageComputation(companies);
 		employeeWageComputation.computeWage();
